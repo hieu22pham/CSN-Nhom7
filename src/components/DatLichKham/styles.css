@@ -1,0 +1,15 @@
+.form {
+  position: absolute;
+  left: 93px;
+}
+
+.formDatLich {
+  position: relative;
+  margin-left: 90px;
+  margin-top: 30px;
+  margin-bottom: 40px;
+}
+
+.inputWidth {
+  width: 600px;
+}
