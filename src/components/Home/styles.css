@@ -23,7 +23,7 @@
   position: relative;
 }
 
-.header-main .menu ul {
+.header-main .menu {
   position: absolute;
   left: 50px;
   top: -5px;
@@ -31,9 +31,18 @@
   list-style: none;
 }
 
-.header-main .menu ul li {
+.header-main .menu li {
   text-decoration: none;
-  margin-right: 60px;
+  margin-right: 70px;
   font-size: 20px;
   color: #fff;
+}
+
+.buttonLogin {
+  cursor: pointer;
+  margin-left: 675px;
+}
+
+.buttonLogin:hover {
+  color: orangered !important;
 }

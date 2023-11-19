@@ -14,6 +14,10 @@ export default function Home() {
     navigate("/DatLichKham");
   }
 
+  const handleLogin = () => {
+    navigate("/login");
+  }
+
   return (
     <div>
       <header className='header'>
@@ -21,12 +25,11 @@ export default function Home() {
           <p >ĐC: Số 10 đường Phạm Hùng, Cầu Giấy, Hà Nội | ĐT : 0987654321</p>
         </div>
         <div className='header-main'>
-          <div className='menu'>
-            <ul>
-              <li onClick={handleHome}>Trang chủ</li>
-              <li onClick={handleDatLichKham}>Đặt lịch khám</li>
-            </ul>
-          </div>
+          <ul className='menu'>
+            <li onClick={handleHome}>Trang chủ</li>
+            <li onClick={handleDatLichKham}>Đặt lịch khám</li>
+            <li className='buttonLogin' onClick={handleLogin}>Đăng nhập</li>
+          </ul>
         </div>
       </header>
 
