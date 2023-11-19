@@ -1,0 +1,66 @@
+.login {
+  border: 1px orangered solid;
+  width: 450px;
+  height: 485px;
+  position: relative;
+  left: 36vw;
+  /* top: 50px; */
+}
+
+.gutter-box {
+  padding: 8px 0;
+  background: #00a0e9;
+}
+
+.rowGg {
+  margin-top: -70px;
+  margin-bottom: 20px;
+}
+
+.login-logo .logo {
+  position: absolute;
+  width: 200px;
+  height: 70px;
+  object-fit: cover;
+}
+
+.login-content {
+  margin-top: 85px;
+}
+
+.textLogin {
+  font-size: 25px;
+  margin-left: 82px;
+}
+
+.form-login {
+  justify-content: center;
+}
+
+.loginGoogle {
+  width: 199px;
+}
+
+.quenMk {
+  position: relative;
+  left: 90px;
+  top: -150px;
+}
+
+.ant-btn-text:hover {
+  background-color: rgba(0, 0, 0, 0);
+  color: #1890ff;
+  border: none;
+}
+
+.button-login {
+  width: 282px;
+  position: relative;
+  left: -83px;
+  top: -70px;
+  background: #375464;
+}
+
+.button-login:hover {
+  background: orangered;
+}

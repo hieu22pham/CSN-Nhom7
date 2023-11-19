@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import useFirestore from '../../hooks/useFirestore';
-import { AuthContext } from './AthProvider';
+import { AuthContext } from './AuthProvider';
 import 'firebase/firestore';
-import { db } from '../firebase/config';
+import { db } from '../../firebase/config';
 
 export const AppContext = React.createContext();
 
@@ -20,7 +19,7 @@ export default function AppProvider({ children }) {
   const [products, setProducts] = useState([])
 
   React.useEffect(() => {
-    const data = db.collection('LichKham');
+    const data = db.collection('products');
 
     data
       .get()
@@ -47,7 +46,7 @@ export default function AppProvider({ children }) {
   // Function to add data to the 'products' collection
   const addProductToFirestore = async (name, photoURL) => {
     try {
-      const productsRef = db.firestore().collection('LichKham');
+      const productsRef = db.firestore().collection('products');
       await productsRef.add({
         name,
         photoURL,
