@@ -54,7 +54,7 @@ function QuanLyLichTrinh() {
     memoizedFetchMessagesData();
     memoizedFetchTaiKhoanNhanVien();
     console.log(productsCate)
-  }, [productsCate.length]);
+  }, [productsCate.length || DanhSachNhanVien.length]);
 
   const handleOk = () => {
     form.validateFields()
@@ -100,16 +100,16 @@ function QuanLyLichTrinh() {
     setLoading(true);
     const batch = db.batch();
 
-    deleteDocument(cate.category, selectedProduct.createdAt);
+    deleteDocument("LichTrinhCongViec", selectedProduct.createdAt);
     // const categoryRef = db.collection(cate.category).doc(selectedProduct.createdAt);
     // batch.delete(categoryRef);
 
     // const productsRef = db.collection("products").doc(selectedProduct.createdAt);
     // batch.delete(productsRef);
-
-    memoizedFetchMessagesData();
     setLoading(false);
     setIsModalOpen(false);
+    memoizedFetchMessagesData();
+    memoizedFetchTaiKhoanNhanVien();
   };
 
 
@@ -219,6 +219,7 @@ function QuanLyLichTrinh() {
             </Form.Item>
           </Form>
         </Modal >
+        <h2 className='tittle'>Tất cả lịch trình</h2>
         <div className='productsCate__admin'>
           <Row>
             {productsCate.map((item) => (

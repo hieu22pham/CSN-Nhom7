@@ -3,6 +3,10 @@
   position: relative;
 }
 
+.tittle {
+  margin-left: -35px;
+}
+
 .productsCate__admin {
   position: absolute;
   left: -30px;
