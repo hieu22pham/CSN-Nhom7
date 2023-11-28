@@ -1,16 +1,16 @@
 import React from 'react';
 import { Row, Col } from 'antd';
+import SidebarStaff from './SidebarStaff';
 import { Outlet } from 'react-router-dom';
 import { Route } from 'react-router-dom';
-import SidebarAdmin from './Sidebar';
 
-export default function Admin() {
+export default function Staff() {
   return (
     <div>
 
       <Row>
         <Col span={6}>
-          <SidebarAdmin />
+          <SidebarStaff />
         </Col>
         <Col span={18}>
           <Outlet />

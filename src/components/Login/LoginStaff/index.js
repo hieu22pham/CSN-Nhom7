@@ -1,68 +1,68 @@
-import React from 'react';
+import React, { useMemo, useEffect } from 'react';
 import { Row, Col, Button, Typography } from 'antd';
-import firebase, { auth } from '../../firebase/config';
-import { addDocument } from '../Service/AddDocument';
+import firebase, { auth } from '../../../firebase/config';
+import { addDocument } from '../../Service/AddDocument';
 import { Form, Input, Checkbox, Space, Badge, Alert, message, ConfigProvider } from 'antd';
 import './styles.css';
 import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
+import { db } from '../../../firebase/config';
+import { AuthContext } from '../../Context/AuthProvider';
 
 const { Title } = Typography;
 export const fbProvider = new firebase.auth.FacebookAuthProvider();
 
-function Login() {
+function LoginStaff() {
   const navigate = useNavigate();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showSuccessAlert, setShowSuccessAlert] = useState(false);
   const [showErrorAlert, setShowErrorAlert] = useState(false);
+  const [DanhSachNhanVien, setDanhSachNhanVien] = useState([]);
+  const { tenHienThi, setTenHienThi } =
+    React.useContext(AuthContext);
 
-  const handleFbLogin = async () => {
-    try {
-      alert("ok")
-      const { additionalUserInfo, user } = await auth.signInWithPopup(fbProvider);
-      console.log("Logged in user:", user);
-      navigate("/")
-
-      if (additionalUserInfo.isNewUser) {
-        console.log("New user detected. Adding to Firestore...");
-        // Try adding the user to Firestore
-        addDocument('users', {
-          displayName: user.displayName,
-          email: user.email,
-          photoURL: user.photoURL,
-          uid: user.uid,
-          providerId: additionalUserInfo.providerId,
-        });
-      }
-      message.success('Đăng nhập thành công!');
-    } catch (error) {
-      // Handle different types of errors
-      if (error.code === 'auth/popup-closed-by-user') {
-        // User closed the popup
-        message.warning('Bạn đã đóng cửa sổ đăng nhập bằng Facebook.');
-      } else if (error.code === 'auth/cancelled-popup-request') {
-        // Popup request was cancelled
-        message.warning('Yêu cầu đăng nhập bằng Facebook đã bị hủy.');
-      } else {
-        // Other errors
-        console.log("Error during login:", error);
-        message.error('Đăng nhập bằng Facebook thất bại. Vui lòng thử lại sau.');
-      }
-    }
+  const fetchTenNhanVien = () => {
+    const messagesRef = db.collection("TaiKhoanNhanVien");
+    messagesRef
+      .get()
+      .then((querySnapshot) => {
+        const productsData = querySnapshot.docs.map((doc) => doc.data());
+        setDanhSachNhanVien(productsData);
+      })
+      .catch((error) => {
+        console.error('Error getting messages:', error);
+      });
   };
+
+  const memoizedFetchTaiKhoanNhanVien = useMemo(() => fetchTenNhanVien, [DanhSachNhanVien]);
+
+  useEffect(() => {
+    memoizedFetchTaiKhoanNhanVien();
+  }, []);
 
   const onFinish = async (e) => {
     try {
+      const tenDangNhap = document.getElementById("tenDangNhap").value;
+      const matKhau = document.getElementById("matKhau").value;
 
-      const userCredential = await auth.signInWithEmailAndPassword(email, password);
-      const user = userCredential.user;
-      setShowSuccessAlert(true);
-      setTimeout(() => { }, 7000);
-      setShowSuccessAlert(false);
-      navigate("/admin")
+      DanhSachNhanVien.map((item) => {
+        if (tenDangNhap == item.TaiKhoan && matKhau == item.MatKhau && item.HoTenNhanVien != "") {
+          // navigate("/");
+          setShowSuccessAlert(true);
+          setTimeout(() => { }, 7000);
+          setShowSuccessAlert(false);
+          setTenHienThi(item.HoTenNhanVien)
+          navigate("/staff")
+
+        } else {
+          // navigate("/");
+          console.log(tenHienThi)
+        }
+      });
     } catch (error) {
       setShowErrorAlert(true);
+      console.log(error)
     }
   };
 
@@ -120,7 +120,7 @@ function Login() {
                   },
                 ]}
               >
-                <Input placeholder='Email của bạn' onChange={(e) => setEmail(e.target.value)} />
+                <Input id="tenDangNhap" placeholder='Email của bạn' onChange={(e) => setEmail(e.target.value)} />
               </Form.Item>
 
               <Form.Item
@@ -133,7 +133,7 @@ function Login() {
                   },
                 ]}
               >
-                <Input.Password placeholder='Mật khẩu' onChange={(e) => setPassword(e.target.value)} />
+                <Input.Password id="matKhau" placeholder='Mật khẩu' onChange={(e) => setPassword(e.target.value)} />
               </Form.Item>
 
               <Form.Item
@@ -172,4 +172,4 @@ function Login() {
   )
 }
 
-export default Login;
+export default LoginStaff;

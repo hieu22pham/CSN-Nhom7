@@ -1,0 +1,7 @@
+// Dùng để đăng nhập vào nick nhân viên
+
+function AccountStaff() {
+
+}
+
+export default AccountStaff;

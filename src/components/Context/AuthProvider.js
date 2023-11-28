@@ -12,20 +12,19 @@ export default function AuthProvider({ children }) {
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(true);
   const location = useLocation();
-  const [categories, setCategories] = useState([]);
+  const [lichKham, setLichKham] = useState([]);
   const [cate, setCate] = useState('');
   const [textProduct, setTextProduct] = useState('');
   const [product, setProduct] = useState('');
-  const [slideImages, setSlideImages] = useState('');
+  const [tenHienThi, setTenHienThi] = useState('');
 
   React.useEffect(() => {
-    const data = db.collection('categories');
-
+    const data = db.collection('LichKham');
     data
       .get()
       .then((querySnapshot) => {
         const data = querySnapshot.docs.map((doc) => doc.data());
-        setCategories(data); // Lưu trữ dữ liệu vào state
+        setLichKham(data); // Lưu trữ dữ liệu vào state
       })
       .catch((error) => {
         console.error('Error getting messages:', error);
@@ -126,8 +125,8 @@ export default function AuthProvider({ children }) {
 
   return (
     <AuthContext.Provider value={{
-      user, setUser, categories, cate, setCate, product, setProduct
-      , textProduct, setTextProduct
+      user, setUser, lichKham, cate, setLichKham, product, setProduct
+      , textProduct, setTextProduct, tenHienThi, setTenHienThi
     }}>
       {isLoading ? <Spin style={{ position: 'fixed', inset: 0 }} /> : children}
     </AuthContext.Provider>

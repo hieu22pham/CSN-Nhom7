@@ -1,6 +1,8 @@
 import "./styles.css";
+import { useAuth } from "../Context/AuthProvider";
 import dayjs from 'dayjs';
-import 'dayjs/locale/zh-cn';
+import React from "react";
+import { AuthContext } from "../Context/AuthProvider";
 import { Input, Form } from "antd";
 import dayLocaleData from 'dayjs/plugin/localeData';
 import { DatePicker, Space, Alert, Button } from 'antd';
@@ -28,6 +30,7 @@ export default function DatLichKham() {
 
         addDocument("LichKham", newProductData);
         setShowSuccessAlert(true);
+        form.resetFields();
       })
       .catch((errorInfo) => {
         console.error('Validation failed:', errorInfo);
@@ -52,7 +55,16 @@ export default function DatLichKham() {
     memoizedFetchMessagesData();
     console.log(productsData);
 
-  }, [productsData.length]);
+    if (showSuccessAlert) {
+      const timer = setTimeout(() => {
+        setShowSuccessAlert(false);
+      }, 8000); // 5000 milliseconds = 5 seconds
+
+      return () => {
+        clearTimeout(timer); // Clear the timer if the component unmounts before the alert closes
+      };
+    }
+  }, [productsData.length, showSuccessAlert]);
 
   const config = {
     rules: [
@@ -77,7 +89,7 @@ export default function DatLichKham() {
           }}
         >
           <Alert
-            message="Success Tips"
+            message="Đặt lịch khám thành công!"
             type="success"
             showIcon
             onClose={() => setShowSuccessAlert(false)} // Optional: add a close button
@@ -150,6 +162,26 @@ export default function DatLichKham() {
 
         <Form.Item name="NgayDenKham" label="Ngày đến khám" {...config}>
           <DatePicker />
+        </Form.Item>
+        <Form.Item label='Nhân viên y tế:' name='HoTenNhanVien'
+          rules={[
+            {
+              required: true,
+              message: 'Vui lòng nhập tên nhân viên!',
+            },
+          ]}
+        >
+          <Input className="inputWidth" placeholder='Nhập Email' required />
+        </Form.Item>
+        <Form.Item label='Mô tả tình trạng bệnh:' name='TinhTrangBenh'
+          rules={[
+            {
+              required: true,
+              message: 'Vui lòng nhập tình trạng bệnh!',
+            },
+          ]}
+        >
+          <Input className="inputWidth" placeholder='Nhập tình trạng bệnh' required />
         </Form.Item>
 
         <button onClick={handleSubmit}>Gửi</button>
