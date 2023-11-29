@@ -23,11 +23,12 @@ export default function DatLichKham() {
     const formattedNgayDenKham = date ? date.format('DD-MM-YYYY') : null;
     const a = [];
     DanhSachNhanVien.map((item) => {
-      if (item.NgayLamViec == formattedNgayDenKham) {
-        a.push(item);
+      if (item.NgayLamViec == formattedNgayDenKham && !a.includes(item.HoTenNhanVien)) {
+        a.push(item.HoTenNhanVien);
       }
     })
 
+    console.log(a);
     setDateData(a)
   };
 
