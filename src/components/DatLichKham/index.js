@@ -5,17 +5,31 @@ import React from "react";
 import { AuthContext } from "../Context/AuthProvider";
 import { Input, Form } from "antd";
 import dayLocaleData from 'dayjs/plugin/localeData';
-import { DatePicker, Space, Alert, Button } from 'antd';
+import { DatePicker, Space, Alert, Select, Button } from 'antd';
 import { useState, useEffect, useMemo } from "react";
 import { db } from '../../firebase/config';
 import { addDocument } from "../Service/AddDocument";
 
 dayjs.extend(dayLocaleData);
+const { Option } = Select;
 export default function DatLichKham() {
-  const messagesRef = db.collection('LichKham');
+  const [DanhSachNhanVien, setDanhSachNhanVien] = useState([]);
   const [productsData, setProductsData] = useState([]);
+  const [dateData, setDateData] = useState([]);
   const [form] = Form.useForm();
   const [showSuccessAlert, setShowSuccessAlert] = useState(false);
+
+  const onChange = (date, dateString) => {
+    const formattedNgayDenKham = date ? date.format('DD-MM-YYYY') : null;
+    const a = [];
+    DanhSachNhanVien.map((item) => {
+      if (item.NgayLamViec == formattedNgayDenKham) {
+        a.push(item);
+      }
+    })
+
+    setDateData(a)
+  };
 
   const handleSubmit = () => {
     form.validateFields()
@@ -30,7 +44,6 @@ export default function DatLichKham() {
 
         addDocument("LichKham", newProductData);
         setShowSuccessAlert(true);
-        form.resetFields();
       })
       .catch((errorInfo) => {
         console.error('Validation failed:', errorInfo);
@@ -38,6 +51,7 @@ export default function DatLichKham() {
   };
 
   const fetchMessagesData = () => {
+    const messagesRef = db.collection('LichKham');
     messagesRef
       .get()
       .then((querySnapshot) => {
@@ -48,16 +62,31 @@ export default function DatLichKham() {
         console.error('Error getting messages:', error);
       });
   };
+  const fetchTenNhanVien = () => {
+    const messagesRef = db.collection("LichTrinhCongViec");
+    messagesRef
+      .get()
+      .then((querySnapshot) => {
+        const productsData = querySnapshot.docs.map((doc) => doc.data());
+        setDanhSachNhanVien(productsData);
+      })
+      .catch((error) => {
+        console.error('Error getting messages:', error);
+      });
+  };
 
   const memoizedFetchMessagesData = useMemo(() => fetchMessagesData, [productsData]);
+  const memoizedFetchTaiKhoanNhanVien = useMemo(() => fetchTenNhanVien, [DanhSachNhanVien]);
+
 
   useEffect(() => {
     memoizedFetchMessagesData();
-    console.log(productsData);
+    memoizedFetchTaiKhoanNhanVien();
 
     if (showSuccessAlert) {
       const timer = setTimeout(() => {
         setShowSuccessAlert(false);
+        form.resetFields();
       }, 8000); // 5000 milliseconds = 5 seconds
 
       return () => {
@@ -67,6 +96,17 @@ export default function DatLichKham() {
   }, [productsData.length, showSuccessAlert]);
 
   const config = {
+    rules: [
+      {
+        type: 'object',
+        required: true,
+        message: 'Vui lòng chọn ngày!',
+      },
+    ],
+  };
+
+  const configSelect = {
+    placeholder: "Ok",
     rules: [
       {
         type: 'object',
@@ -161,17 +201,35 @@ export default function DatLichKham() {
         </Form.Item>
 
         <Form.Item name="NgayDenKham" label="Ngày đến khám" {...config}>
-          <DatePicker />
+          <DatePicker onChange={onChange} />
         </Form.Item>
-        <Form.Item label='Nhân viên y tế:' name='HoTenNhanVien'
+        <Form.Item label='Chọn tên nhân viên y tế' name='HoTenNhanVien'
           rules={[
             {
               required: true,
-              message: 'Vui lòng nhập tên nhân viên!',
+              message: 'Vui lòng chọn tên nhân viên y tế!',
             },
           ]}
         >
-          <Input className="inputWidth" placeholder='Nhập Email' required />
+          <Select
+            placeholder="Nhân viên y tế"
+            defaultValue={false}
+            filterOption={false}
+            style={{
+              width: 200,
+              // height: 'auto',
+            }}
+            // onChange={handleChange}
+            dropdownMatchSelectWidth={false}
+          >
+            {dateData.map((item) => (
+              item.HoTenNhanVien && (
+                <Option key={item.HoTenNhanVien} value={item.HoTenNhanVien}>
+                  {item.HoTenNhanVien}
+                </Option>
+              )
+            ))}
+          </Select>
         </Form.Item>
         <Form.Item label='Mô tả tình trạng bệnh:' name='TinhTrangBenh'
           rules={[

@@ -58,7 +58,7 @@ export default function SidebarStaff() {
   const handleLogout = () => {
     auth.signOut()
       .then(() => {
-        navigate('/login');
+        navigate('/');
         // setUser({});
         console.log(tenHienThi);
       })

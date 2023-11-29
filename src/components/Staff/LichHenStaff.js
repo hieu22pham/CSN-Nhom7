@@ -36,13 +36,10 @@ function LichHenStaff() {
           if (item.HoTenNhanVien == tenHienThi) {
             a.push(item);
             setLichKham(a)
-            console.log(lichKham)
           } else {
             // navigate("/");
-            console.log(tenHienThi)
           }
         });
-        console.log(lichKham);
       })
       .catch((error) => {
         console.error('Error getting messages:', error);

@@ -53,7 +53,6 @@ function QuanLyLichTrinh() {
     // Fetch data from Firestore when the component mounts
     memoizedFetchMessagesData();
     memoizedFetchTaiKhoanNhanVien();
-    console.log(productsCate)
   }, [productsCate.length || DanhSachNhanVien.length]);
 
   const handleOk = () => {
@@ -118,7 +117,6 @@ function QuanLyLichTrinh() {
   };
 
   const handleChange = (value) => {
-    console.log(`selected ${value}`);
   };
 
   const config = {
@@ -130,6 +128,8 @@ function QuanLyLichTrinh() {
       },
     ],
   };
+
+
 
   return (
     <>
@@ -171,6 +171,7 @@ function QuanLyLichTrinh() {
                     )
                   ))}
                 </Select>
+
               </Form.Item>
             </Space>
 
