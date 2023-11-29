@@ -28,8 +28,7 @@ export default function DatLichKham() {
       }
     })
 
-    console.log(a);
-    setDateData(a)
+    setDateData(a);
   };
 
   const handleSubmit = () => {
@@ -224,11 +223,9 @@ export default function DatLichKham() {
             dropdownMatchSelectWidth={false}
           >
             {dateData.map((item) => (
-              item.HoTenNhanVien && (
-                <Option key={item.HoTenNhanVien} value={item.HoTenNhanVien}>
-                  {item.HoTenNhanVien}
-                </Option>
-              )
+              <Option key={item.HoTenNhanVien} value={item.HoTenNhanVien}>
+                {item}
+              </Option>
             ))}
           </Select>
         </Form.Item>
