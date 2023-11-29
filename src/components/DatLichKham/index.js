@@ -27,8 +27,9 @@ export default function DatLichKham() {
         a.push(item.HoTenNhanVien);
       }
     })
-
+    form.resetFields(['HoTenNhanVien'])
     setDateData(a);
+
   };
 
   const handleSubmit = () => {
@@ -212,18 +213,16 @@ export default function DatLichKham() {
           ]}
         >
           <Select
+            id="selectName"
             placeholder="Nhân viên y tế"
             defaultValue={false}
-            filterOption={false}
             style={{
               width: 200,
-              // height: 'auto',
             }}
-            // onChange={handleChange}
             dropdownMatchSelectWidth={false}
           >
             {dateData.map((item) => (
-              <Option key={item.HoTenNhanVien} value={item.HoTenNhanVien}>
+              <Option key={item} value={item}>
                 {item}
               </Option>
             ))}
