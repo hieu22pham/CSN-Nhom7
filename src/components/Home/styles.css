@@ -32,15 +32,15 @@
 }
 
 .header-main .menu li {
+  cursor: pointer;
   text-decoration: none;
-  margin-right: 70px;
+  margin-right: 55px;
   font-size: 20px;
   color: #fff;
 }
 
 .buttonLogin {
-  cursor: pointer;
-  margin-left: 675px;
+  margin-left: 685px;
 }
 
 .buttonLogin:hover {

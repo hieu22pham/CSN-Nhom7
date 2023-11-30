@@ -136,7 +136,7 @@ function QuanLyLichTrinh() {
       <div className='AllLichTrinh'>
         <Button className='btnAddProductCate' onClick={addProduct}><span>Thêm lịch trình</span></Button>
         <Modal
-          title='Tạo sản phẩm'
+          title='Tạo lịch trình'
           visible={isAddProductVisible}
           onOk={handleOk}
           onCancel={handleCancel}
@@ -178,7 +178,7 @@ function QuanLyLichTrinh() {
             <Form.Item name="NgayLamViec" label="Ngày làm việc " {...config}>
               <DatePicker placeholder="Chọn ngày" />
             </Form.Item>
-            <Form.Item label='URL ảnh' name='photoURL'
+            {/* <Form.Item label='URL ảnh' name='photoURL'
               rules={[
                 {
                   required: true,
@@ -217,7 +217,7 @@ function QuanLyLichTrinh() {
               ]}
             >
               <Input placeholder='Nhập mô tả' required />
-            </Form.Item>
+            </Form.Item> */}
           </Form>
         </Modal >
         <h2 className='tittle'>Tất cả lịch trình</h2>

@@ -29,7 +29,6 @@ export default function DatLichKham() {
     })
     form.resetFields(['HoTenNhanVien'])
     setDateData(a);
-
   };
 
   const handleSubmit = () => {

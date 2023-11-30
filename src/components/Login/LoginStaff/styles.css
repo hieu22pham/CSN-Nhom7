@@ -1,9 +1,10 @@
 .login {
+  margin-top: 100px;
   border: 1px orangered solid;
   width: 450px;
   height: 485px;
   position: relative;
-  left: 36vw;
+  left: 35vw;
   /* top: 50px; */
 }
 

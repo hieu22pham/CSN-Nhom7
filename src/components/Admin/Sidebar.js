@@ -58,11 +58,6 @@ export default function SidebarAdmin() {
 
   const items = [
     {
-      label: <Link to="/admin/user">{displayName}</Link>,
-      icon: <UnorderedListOutlined />,
-      key: "/admin/user",
-    },
-    {
       label: <Link to="/admin/user">Tài khoản nhân viên</Link>,
       icon: <UnorderedListOutlined />,
       key: "/admin/user",
