@@ -12,22 +12,15 @@ const { Option } = Select;
 function LichHenStaff() {
   const { check, setCheck } =
     React.useContext(AuthContext);
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [loading, setLoading] = useState(false);
-  const [selectedProduct, setSelectedProduct] = useState([]);
   const [lichKham, setLichKham] = useState([]);
 
-  const [productsCate, setProductsCate] = useState([]);
-  const [DanhSachNhanVien, setDanhSachNhanVien] = useState([]);
-  const [form] = Form.useForm();
-  const [isAddProductVisible, setIsAddProductVisible] = useState(false);
   const { user: { uid } } = useContext(AuthContext);
   const { tenHienThi, setTenHienThi } =
     React.useContext(AuthContext);
 
   const fetchTenNhanVien = () => {
-    const messagesRef = db.collection("LichKham");
-    messagesRef
+    const data = db.collection("LichKham");
+    data
       .get()
       .then((querySnapshot) => {
         const productsData = querySnapshot.docs.map((doc) => doc.data());
@@ -37,7 +30,6 @@ function LichHenStaff() {
             a.push(item);
             setLichKham(a)
           } else {
-            // navigate("/");
           }
         });
       })
@@ -51,31 +43,6 @@ function LichHenStaff() {
   useEffect(() => {
     memoizedFetchTaiKhoanNhanVien();
   }, [lichKham.length]);
-
-  // const handleDeleteDoc = (item) => {
-  //   setIsModalOpen(true);
-  //   setSelectedProduct(item);
-  // };
-
-  // const handleOkDelete = () => {
-  //   setLoading(true);
-  //   const batch = db.batch();
-
-  //   deleteDocument("LichKham", selectedProduct.createdAt);
-  //   // const categoryRef = db.collection(cate.category).doc(selectedProduct.createdAt);
-  //   // batch.delete(categoryRef);
-
-  //   // const productsRef = db.collection("products").doc(selectedProduct.createdAt);
-  //   // batch.delete(productsRef);
-  //   setLoading(false);
-  //   setIsModalOpen(false);
-  //   memoizedFetchTaiKhoanNhanVien();
-  // };
-
-
-  // const handleCancelDelete = () => {
-  //   setIsModalOpen(false);
-  // };
 
   const config = {
     rules: [
@@ -95,31 +62,13 @@ function LichHenStaff() {
           <Row>
             {lichKham.map((item) => (
               <Col key={item.id} span="8">
-                {/* <Modal
-                  title="Thông báo!"
-                  onOk={() => handleOkDelete(item.createdAt)}
-                  onCancel={handleCancelDelete}
-                  visible={isModalOpen}
-                  confirmLoading={loading}
-                  footer={[
-                    <Button key="back" onClick={handleCancelDelete}>
-                      Hủy
-                    </Button>,
-                    <Button key="submit" type="primary" loading={loading} onClick={handleOkDelete}>
-                      Đồng ý
-                    </Button>,
-                  ]}
-                ></Modal> */}
                 {item.HoTen && (
-                  <div className='productsCate__admin__item'>
-                    <div className='productsCate__admin_name'>
+                  <div className='lich__admin__item'>
+                    <div className='lich__admin__name'>
                       <h3>{item.HoTen}</h3>
                       <h3>{item.NgayDenKham}</h3>
                     </div>
-                    {/* <button className='btn_delete' onClick={() => handleDeleteDoc(item)}>Xóa</button> */}
-                    <div className='productsCate__admin_image'>
-
-                    </div>
+                   
                   </div>
                 )}
 

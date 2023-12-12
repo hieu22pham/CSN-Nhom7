@@ -7,79 +7,57 @@ import { deleteDocument } from '../Service/AddDocument';
 import "./QuanLyLichTrinh.css"
 import { AuthContext } from '../Context/AuthProvider';
 import { useAuth } from '../Context/AuthProvider';
-const { Option } = Select;
 
 function QuanLyLichHen() {
   const { lichKham, setlichKham, check, setCheck } =
     React.useContext(AuthContext);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [selectedProduct, setSelectedProduct] = useState([]);
+  const [selectedLichHen, setSelectedLichHen] = useState([]);
 
-  const [productsCate, setProductsCate] = useState([]);
-  const [DanhSachNhanVien, setDanhSachNhanVien] = useState([]);
-  const [form] = Form.useForm();
-  const [isAddProductVisible, setIsAddProductVisible] = useState(false);
+  const [danhSachLichHen, setDanhSachLichHen] = useState([]);
   const { user: { uid } } = useContext(AuthContext);
 
-  const fetchMessagesData = () => {
-    const messagesRef = db.collection("LichKham");
-    messagesRef
+  const fetchLichKhamData = () => {
+    const dsLichKham = db.collection("LichKham");
+    dsLichKham
       .get()
       .then((querySnapshot) => {
-        const productsData = querySnapshot.docs.map((doc) => doc.data());
-        setProductsCate(productsData);
+        const data = querySnapshot.docs.map((doc) => doc.data());
+        setDanhSachLichHen(data);
+
+        // const a = [];
+        // danhSachLichHen.map((item) => {
+        //   if (!a.includes(item.HoTenNhanVien)) {
+        //     a.push(item.HoTenNhanVien);
+        //   }
+        // })
       })
       .catch((error) => {
         console.error('Error getting messages:', error);
       });
   };
 
-  const fetchTenNhanVien = () => {
-    const messagesRef = db.collection("LichKham");
-    messagesRef
-      .get()
-      .then((querySnapshot) => {
-        const productsData = querySnapshot.docs.map((doc) => doc.data());
-        setlichKham(productsData);
-        setCheck(!check);
-      })
-      .catch((error) => {
-        console.error('Error getting messages:', error);
-      });
-  };
 
-  const memoizedFetchMessagesData = useMemo(() => fetchMessagesData, [productsCate]);
-  const memoizedFetchTaiKhoanNhanVien = useMemo(() => fetchTenNhanVien, [lichKham || check]);
+  const memoizedFetchLichKhamData = useMemo(() => fetchLichKhamData, [danhSachLichHen]);
 
   useEffect(() => {
-    // Fetch data from Firestore when the component mounts
-    memoizedFetchMessagesData();
-    memoizedFetchTaiKhoanNhanVien();
-
-    console.log(productsCate)
-    console.log(check)
-  }, [productsCate.length || lichKham.length || check]);
+    memoizedFetchLichKhamData();
+  }, [lichKham.length || check]);
 
   const handleDeleteDoc = (item) => {
     setIsModalOpen(true);
-    setSelectedProduct(item);
+    setSelectedLichHen(item);
   };
 
   const handleOkDelete = () => {
     setLoading(true);
     const batch = db.batch();
 
-    deleteDocument("LichKham", selectedProduct.createdAt);
-    // const categoryRef = db.collection(cate.category).doc(selectedProduct.createdAt);
-    // batch.delete(categoryRef);
-
-    // const productsRef = db.collection("products").doc(selectedProduct.createdAt);
-    // batch.delete(productsRef);
+    deleteDocument("LichKham", selectedLichHen.createdAt);
     setLoading(false);
     setIsModalOpen(false);
-    memoizedFetchMessagesData();
-    memoizedFetchTaiKhoanNhanVien();
+    memoizedFetchLichKhamData();
   };
 
 
@@ -87,27 +65,13 @@ function QuanLyLichHen() {
     setIsModalOpen(false);
   };
 
-  const handleChange = (value) => {
-    console.log(`selected ${value}`);
-  };
-
-  const config = {
-    rules: [
-      {
-        type: 'object',
-        required: true,
-        message: 'Vui lòng chọn ngày!',
-      },
-    ],
-  };
-
   return (
     <>
       <div className='AllLichTrinh'>
         <h2 className='tittle'>Tất cả lịch hẹn</h2>
-        <div className='productsCate__admin'>
+        <div className='danhSachLichHen__admin'>
           <Row>
-            {productsCate.map((item) => (
+            {danhSachLichHen.map((item) => (
               <Col key={item.id} span="8">
                 <Modal
                   title="Thông báo!"
@@ -125,18 +89,14 @@ function QuanLyLichHen() {
                   ]}
                 ></Modal>
                 {item.HoTen && (
-                  <div className='productsCate__admin__item'>
-                    <div className='productsCate__admin_name'>
+                  <div className='lich__admin__item'>
+                    <div className='lich__admin__name'>
                       <h3>{item.HoTen}</h3>
                       <h3>{item.NgayDenKham}</h3>
                     </div>
                     <button className='btn_delete' onClick={() => handleDeleteDoc(item)}>Xóa</button>
-                    <div className='productsCate__admin_image'>
-
-                    </div>
                   </div>
                 )}
-
               </Col>
             ))}
           </Row>

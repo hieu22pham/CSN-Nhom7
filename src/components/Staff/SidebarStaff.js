@@ -11,14 +11,10 @@ import {
   InsertRowBelowOutlined,
   InsertRowAboveOutlined
 } from "@ant-design/icons"
-import AppContext from 'antd/es/app/context';
 import { auth } from '../../firebase/config';
 import { AuthContext } from '../Context/AuthProvider';
 
 export default function SidebarStaff() {
-  const { products, setIsAddRoomVisible, setSelectedRoomId } =
-    React.useContext(AppContext);
-
   const { tenHienThi, setTenHienThi } =
     React.useContext(AuthContext);
   const navigate = useNavigate([])
@@ -52,14 +48,10 @@ export default function SidebarStaff() {
     },
   ];
 
-
-  // const { clearState } = React.useContext(AppContext);
-
   const handleLogout = () => {
     auth.signOut()
       .then(() => {
         navigate('/');
-        // setUser({});
         console.log(tenHienThi);
       })
       .catch((error) => {

@@ -9,7 +9,7 @@ import { AuthContext } from '../Context/AuthProvider';
 import { useNavigate } from 'react-router-dom';
 const { Option } = Select;
 
-function QuanLyLichTrinh() {
+function LichTrinhNhanVien() {
   const navigate = useNavigate([])
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -20,7 +20,7 @@ function QuanLyLichTrinh() {
   const [form] = Form.useForm();
   const [isAddProductVisible, setIsAddProductVisible] = useState(false);
   const { user: { uid } } = useContext(AuthContext);
-  const { setTenNhanVien, setPathTenNhanVien } =
+  const { tenNhanVien, setTenNhanVien } =
     React.useContext(AuthContext);
 
   const fetchLichTrinhCongViec = () => {
@@ -29,7 +29,18 @@ function QuanLyLichTrinh() {
       .get()
       .then((querySnapshot) => {
         const productsData = querySnapshot.docs.map((doc) => doc.data());
-        setLichTrinhCongViec(productsData);
+
+        const a = [];
+        productsData.forEach((item) => {
+          if (item.HoTenNhanVien === `${tenNhanVien}`) {
+            a.push(item);
+          } else {
+            console.log(item.HoTenNhanVien === `${tenNhanVien}`);
+          }
+        });
+
+        setLichTrinhCongViec(a);
+        console.log(lichTrinhCongViec);
       })
       .catch((error) => {
         console.error('Error getting messages:', error);
@@ -43,15 +54,7 @@ function QuanLyLichTrinh() {
       .then((querySnapshot) => {
         const productsData = querySnapshot.docs.map((doc) => doc.data());
         setDanhSachNhanVien(productsData);
-        // const a = [];
-        // DanhSachNhanVien.map((item) => {
-        //   if (!a.includes(item.HoTenNhanVien) && item.HoTenNhanVien) {
-        //     a.push(item.HoTenNhanVien);
-        //   }
-        // })
 
-        // setDanhSachNhanVien(a);
-        // console(DanhSachNhanVien)
       })
       .catch((error) => {
         console.error('Error getting messages:', error);
@@ -126,7 +129,7 @@ function QuanLyLichTrinh() {
   };
 
   const handleTenNhanVien = (item) => {
-    var result = item;
+    const result = item;
     result = result
       .normalize("NFD")
       .replace(/[\u0300-\u036f]/g, "");
@@ -134,8 +137,7 @@ function QuanLyLichTrinh() {
     // Loại bỏ dấu cách
     result = result.replace(/\s/g, "");
     setTenNhanVien(item);
-    setPathTenNhanVien(result)
-    navigate(`/admin/LichTrinh/${result}`);
+    navigate(`/admin/LichTrinh/${item}`);
   }
 
   const config = {
@@ -199,10 +201,10 @@ function QuanLyLichTrinh() {
             </Form.Item>
           </Form>
         </Modal >
-        <h2 className='tittle'>Chọn nhân viên: </h2>
+        <h2 className='tittle'>Danh sách lịch trình: </h2>
         <div className='lichTrinhCongViec__admin'>
           <Row>
-            {DanhSachNhanVien.map((item) => (
+            {lichTrinhCongViec.map((item) => (
               <Col key={item.id} span="8">
                 <Modal
                   title="Thông báo!"
@@ -222,10 +224,9 @@ function QuanLyLichTrinh() {
                 <div className='lich__admin__item'>
                   <div className='lich__admin__name'>
                     <h3>{item.HoTenNhanVien}</h3>
-                    {/* <h3>{item.NgayLamViec}</h3> */}
+                    <h3>{item.NgayLamViec}</h3>
                   </div>
-                  {/* <button className='btn_delete' onClick={() => handleDeleteDoc(item)}>Xóa</button> */}
-                  <button className='btn_delete' onClick={() => handleTenNhanVien(item.HoTenNhanVien)}>Xem chi tiết</button>
+                  <button className='btn_delete' onClick={() => handleDeleteDoc(item)}>Xóa</button>
                 </div>
 
               </Col>
@@ -237,4 +238,4 @@ function QuanLyLichTrinh() {
   )
 }
 
-export default QuanLyLichTrinh;
+export default LichTrinhNhanVien;

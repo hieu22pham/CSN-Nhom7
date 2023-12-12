@@ -3,15 +3,15 @@ import dayjs from 'dayjs';
 import 'dayjs/locale/zh-cn';
 import { Input, Form } from "antd";
 import dayLocaleData from 'dayjs/plugin/localeData';
-import { DatePicker, Space, Alert, Button } from 'antd';
+import { Space, Alert } from 'antd';
 import { useState, useEffect, useMemo } from "react";
 import { db } from '../../firebase/config';
 import { addDocument } from "../Service/AddDocument";
 
 dayjs.extend(dayLocaleData);
 export default function AccountStaff() {
-  const messagesRef = db.collection('TaiKhoanNhanVien');
-  const [productsData, setProductsData] = useState([]);
+  const danhSachTaiKhoanNhanVien = db.collection('TaiKhoanNhanVien');
+  const [danhSachNhanVienData, setdanhSachNhanVienData] = useState([]);
   const [form] = Form.useForm();
   const [showSuccessAlert, setShowSuccessAlert] = useState(false);
 
@@ -34,25 +34,25 @@ export default function AccountStaff() {
       });
   };
 
-  const fetchMessagesData = () => {
-    messagesRef
+  const fetchDanhSachNhanVienData = () => {
+    danhSachTaiKhoanNhanVien
       .get()
       .then((querySnapshot) => {
-        const products = querySnapshot.docs.map((doc) => doc.data());
-        setProductsData(products); // Update state with the data
+        const danhSachNhanVien = querySnapshot.docs.map((doc) => doc.data());
+        setdanhSachNhanVienData(danhSachNhanVien);
       })
       .catch((error) => {
         console.error('Error getting messages:', error);
       });
   };
 
-  const memoizedFetchMessagesData = useMemo(() => fetchMessagesData, [productsData]);
+  const memoizedFetchDanhSachNhanVienData = useMemo(() => fetchDanhSachNhanVienData, [danhSachNhanVienData]);
 
   useEffect(() => {
-    memoizedFetchMessagesData();
-    console.log(productsData);
+    memoizedFetchDanhSachNhanVienData();
+    console.log(danhSachNhanVienData);
 
-  }, [productsData.length]);
+  }, [danhSachNhanVienData.length]);
 
   const config = {
     rules: [
@@ -80,7 +80,7 @@ export default function AccountStaff() {
             message="Success Tips"
             type="success"
             showIcon
-            onClose={() => setShowSuccessAlert(false)} // Optional: add a close button
+            onClose={() => setShowSuccessAlert(false)}
           />
         </Space>
       )}

@@ -1,44 +1,20 @@
 import React, { useEffect, useState } from 'react';
-import { Button, Avatar, Typography, Menu, Dropdown } from 'antd';
+import { Avatar, Menu, Dropdown } from 'antd';
 import { Link, useNavigate } from "react-router-dom";
-import { PlusSquareOutlined } from '@ant-design/icons';
 import {
-  UserOutlined,
-  PlayCircleOutlined,
-  HomeOutlined,
   UnorderedListOutlined,
   InsertRowBelowOutlined,
   InsertRowAboveOutlined
 } from "@ant-design/icons"
-import AppContext from 'antd/es/app/context';
 import { auth } from '../../firebase/config';
 import { AuthContext } from '../Context/AuthProvider';
 
 export default function SidebarAdmin() {
-  const { products, setIsAddRoomVisible, setSelectedRoomId } =
-    React.useContext(AppContext);
-  const { categories, setCategories, cate, setCate, setUser } =
-    React.useContext(AuthContext);
   const {
     user: { displayName, photoURL },
   } = React.useContext(AuthContext);
 
   const navigate = useNavigate([])
-
-  const handleAddCategories = () => {
-    setIsAddRoomVisible(true);
-    // this.forceUpdate();
-  };
-
-  const handleCategoryClick = (item) => {
-    setCate(item);
-    localStorage.setItem('Cate', JSON.stringify(item));
-  };
-
-  // useEffect(() => {
-  //   products = products
-  //   // You can perform other actions here based on the updated 'products' state
-  // }, [products]);
 
   const handleMenuClick = (e) => {
     if (e.key === 'profile') {
@@ -72,21 +48,14 @@ export default function SidebarAdmin() {
     },
   ];
 
-
-  // const { clearState } = React.useContext(AppContext);
-
   const handleLogout = () => {
     auth.signOut()
       .then(() => {
         navigate('/login');
-        // setUser({});
-        console.log(displayName);
       })
       .catch((error) => {
         console.error('Error signing out:', error);
       });
-
-    console.log(displayName);
   };
 
   return (

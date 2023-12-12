@@ -5,16 +5,26 @@ import React from "react";
 import { AuthContext } from "../Context/AuthProvider";
 import { Input, Form } from "antd";
 import dayLocaleData from 'dayjs/plugin/localeData';
-import { DatePicker, Space, Alert, Select, Button } from 'antd';
+import { DatePicker, Space, Alert, Select } from 'antd';
 import { useState, useEffect, useMemo } from "react";
 import { db } from '../../firebase/config';
 import { addDocument } from "../Service/AddDocument";
+const options = [];
+
+for (let i = 8; i <= 17; i++) {
+  if (i != 12) {
+    options.push({
+      value: i + " giờ",
+      label: i + " giờ",
+    });
+  }
+}
 
 dayjs.extend(dayLocaleData);
 const { Option } = Select;
 export default function DatLichKham() {
   const [DanhSachNhanVien, setDanhSachNhanVien] = useState([]);
-  const [productsData, setProductsData] = useState([]);
+  const [lichKhamData, setLichKhamData] = useState([]);
   const [dateData, setDateData] = useState([]);
   const [form] = Form.useForm();
   const [showSuccessAlert, setShowSuccessAlert] = useState(false);
@@ -50,50 +60,50 @@ export default function DatLichKham() {
       });
   };
 
-  const fetchMessagesData = () => {
-    const messagesRef = db.collection('LichKham');
-    messagesRef
+  const fetchLichKhamData = () => {
+    const data = db.collection('LichKham');
+    data
       .get()
       .then((querySnapshot) => {
         const products = querySnapshot.docs.map((doc) => doc.data());
-        setProductsData(products); // Update state with the data
+        setLichKhamData(products); // Update state with the data
       })
       .catch((error) => {
         console.error('Error getting messages:', error);
       });
   };
+
   const fetchTenNhanVien = () => {
-    const messagesRef = db.collection("LichTrinhCongViec");
-    messagesRef
+    const data = db.collection("LichTrinhCongViec");
+    data
       .get()
       .then((querySnapshot) => {
-        const productsData = querySnapshot.docs.map((doc) => doc.data());
-        setDanhSachNhanVien(productsData);
+        const lichKhamData = querySnapshot.docs.map((doc) => doc.data());
+        setDanhSachNhanVien(lichKhamData);
       })
       .catch((error) => {
         console.error('Error getting messages:', error);
       });
   };
 
-  const memoizedFetchMessagesData = useMemo(() => fetchMessagesData, [productsData]);
+  const memoizedFetchLichKhamData = useMemo(() => fetchLichKhamData, [lichKhamData]);
   const memoizedFetchTaiKhoanNhanVien = useMemo(() => fetchTenNhanVien, [DanhSachNhanVien]);
 
-
   useEffect(() => {
-    memoizedFetchMessagesData();
+    memoizedFetchLichKhamData();
     memoizedFetchTaiKhoanNhanVien();
 
     if (showSuccessAlert) {
       const timer = setTimeout(() => {
         setShowSuccessAlert(false);
         form.resetFields();
-      }, 8000); // 5000 milliseconds = 5 seconds
+      }, 8000);
 
       return () => {
-        clearTimeout(timer); // Clear the timer if the component unmounts before the alert closes
+        clearTimeout(timer);
       };
     }
-  }, [productsData.length, showSuccessAlert]);
+  }, [lichKhamData.length, showSuccessAlert]);
 
   const config = {
     rules: [
@@ -177,7 +187,7 @@ export default function DatLichKham() {
             },
           ]}
         >
-          <Input className="inputWidth" placeholder='Nhập Email' required />
+          <Input className="inputWidth" placeholder='Nhập Email' />
         </Form.Item>
         <Form.Item label='Số điện thoại' name='SoDienThoai'
           rules={[
@@ -197,13 +207,28 @@ export default function DatLichKham() {
             },
           ]}
         >
-          <Input className="inputWidth" placeholder='Nhập thời gian đến khám' required />
+          <Select
+            id="selectName"
+            placeholder="Nhân viên y tế"
+            defaultValue={false}
+            style={{
+              width: 200,
+            }}
+            dropdownMatchSelectWidth={false}
+            options={options}
+          >
+            {dateData.map((item) => (
+              <Option key={item} value={item}>
+                {item}
+              </Option>
+            ))}
+          </Select>
         </Form.Item>
 
         <Form.Item name="NgayDenKham" label="Ngày đến khám" {...config}>
           <DatePicker onChange={onChange} />
         </Form.Item>
-        <Form.Item label='Chọn tên nhân viên y tế' name='HoTenNhanVien'
+        {/* <Form.Item label='Chọn tên nhân viên y tế' name='HoTenNhanVien'
           rules={[
             {
               required: true,
@@ -226,7 +251,7 @@ export default function DatLichKham() {
               </Option>
             ))}
           </Select>
-        </Form.Item>
+        </Form.Item> */}
         <Form.Item label='Mô tả tình trạng bệnh:' name='TinhTrangBenh'
           rules={[
             {
