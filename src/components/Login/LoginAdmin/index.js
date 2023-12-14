@@ -19,7 +19,6 @@ function LoginAdmin() {
 
   const onFinish = async (e) => {
     try {
-
       const userCredential = await auth.signInWithEmailAndPassword(email, password);
       const user = userCredential.user;
       setShowSuccessAlert(true);

@@ -23,7 +23,7 @@ function LoginStaff() {
     React.useContext(AuthContext);
 
   const fetchTenNhanVien = () => {
-    const data = db.collection("TaiKhoanNhanVien");
+    const data = db.collection("NhanVien");
     data
       .get()
       .then((querySnapshot) => {
@@ -47,7 +47,7 @@ function LoginStaff() {
       const matKhau = document.getElementById("matKhau").value;
 
       DanhSachNhanVien.map((item) => {
-        if (tenDangNhap == item.TaiKhoan && matKhau == item.MatKhau && item.HoTenNhanVien != "") {
+        if (tenDangNhap == item.taiKhoan && matKhau == item.matKhau && item.HoTenNhanVien != "") {
           setShowSuccessAlert(true);
           setTimeout(() => { }, 7000);
           setShowSuccessAlert(false);

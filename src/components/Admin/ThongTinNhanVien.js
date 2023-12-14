@@ -9,7 +9,7 @@ import { AuthContext } from '../Context/AuthProvider';
 import { useNavigate } from 'react-router-dom';
 const { Option } = Select;
 
-function LichTrinhNhanVien() {
+function ThongTinNhanVien() {
   const navigate = useNavigate([])
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -24,7 +24,7 @@ function LichTrinhNhanVien() {
     React.useContext(AuthContext);
 
   const fetchLichTrinhCongViec = () => {
-    const data = db.collection("LichTrinhCongViec");
+    const data = db.collection("NhanVien");
     data
       .get()
       .then((querySnapshot) => {
@@ -79,8 +79,8 @@ function LichTrinhNhanVien() {
           ...form.getFieldsValue(),
           NgayLamViec: formattedNgayLamViec,
         };
-        addDocument("LichTrinhCongViec", newProductData);
-        const categoryRef = db.collection("LichTrinhCongViec");
+        addDocument("NhanVien", newProductData);
+        const categoryRef = db.collection("NhanVien");
         memoizedFetchLichTrinhCongViec();
         const categorySnapshot = categoryRef.get();
         if (!categorySnapshot.exists) {
@@ -108,7 +108,7 @@ function LichTrinhNhanVien() {
     setLoading(true);
     const batch = db.batch();
 
-    deleteDocument("LichTrinhCongViec", selectedProduct.createdAt);
+    deleteDocument("NhanVien", selectedProduct.createdAt);
 
     setLoading(false);
     setIsModalOpen(false);
@@ -197,7 +197,7 @@ function LichTrinhNhanVien() {
             </Form.Item>
           </Form>
         </Modal >
-        <h2 className='tittle'>Danh sách lịch trình: </h2>
+        <h2 className='tittle'>Thông tin nhân viên: </h2>
         <div className='lichTrinhCongViec__admin'>
           <Row>
             {lichTrinhCongViec.map((item) => (
@@ -219,10 +219,17 @@ function LichTrinhNhanVien() {
                 ></Modal>
                 <div className='lich__admin__item'>
                   <div className='lich__admin__name'>
-                    <h3>{item.HoTenNhanVien}</h3>
-                    <h3>{item.NgayLamViec}</h3>
+                    <h3>Họ tên: {item.HoTenNhanVien}</h3>
+                    <h3>Giới tính: {item.gioiTinh}</h3>
+                    <h3>Ngày sinh: {item.ngaySinh}</h3>
+                    <h3>Số điện thoại: {item.sdt}</h3>
+                    <h3>Email: {item.email}</h3>
+                    <h3>Địa chỉ: {item.diaChi}</h3>
+                    <h3>Vị trí làm việc: {item.viTriLamViec}</h3>
+                    <h3>Kinh nghiệm: {item.kinhNghiem}</h3>
+                    <h3>Hồ sơ thuế: {item.hoSoThue}</h3>
+                    <h3>Số bảo hiểm xã hội: {item.baoHiemXaHoi}</h3>
                   </div>
-                  <button className='btn_delete' onClick={() => handleDeleteDoc(item)}>Xóa</button>
                 </div>
 
               </Col>
@@ -234,4 +241,4 @@ function LichTrinhNhanVien() {
   )
 }
 
-export default LichTrinhNhanVien;
+export default ThongTinNhanVien;

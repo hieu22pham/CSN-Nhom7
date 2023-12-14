@@ -37,21 +37,13 @@ function QuanLyLichTrinh() {
   };
 
   const fetchTenNhanVien = () => {
-    const data = db.collection("TaiKhoanNhanVien");
+    const data = db.collection("NhanVien");
     data
       .get()
       .then((querySnapshot) => {
         const productsData = querySnapshot.docs.map((doc) => doc.data());
         setDanhSachNhanVien(productsData);
-        // const a = [];
-        // DanhSachNhanVien.map((item) => {
-        //   if (!a.includes(item.HoTenNhanVien) && item.HoTenNhanVien) {
-        //     a.push(item.HoTenNhanVien);
-        //   }
-        // })
-
-        // setDanhSachNhanVien(a);
-        // console(DanhSachNhanVien)
+        console.log("Ds:" + DanhSachNhanVien);
       })
       .catch((error) => {
         console.error('Error getting messages:', error);
@@ -219,15 +211,16 @@ function QuanLyLichTrinh() {
                     </Button>,
                   ]}
                 ></Modal>
-                <div className='lich__admin__item'>
-                  <div className='lich__admin__name'>
-                    <h3>{item.HoTenNhanVien}</h3>
-                    {/* <h3>{item.NgayLamViec}</h3> */}
+                {item.HoTenNhanVien &&
+                  <div className='lich__admin__item'>
+                    <div className='lich__admin__name'>
+                      <h3>{item.HoTenNhanVien}</h3>
+                      {/* <h3>{item.NgayLamViec}</h3> */}
+                    </div>
+                    {/* <button className='btn_delete' onClick={() => handleDeleteDoc(item)}>Xóa</button> */}
+                    <button className='btn_delete' onClick={() => handleTenNhanVien(item.HoTenNhanVien)}>Xem chi tiết</button>
                   </div>
-                  {/* <button className='btn_delete' onClick={() => handleDeleteDoc(item)}>Xóa</button> */}
-                  <button className='btn_delete' onClick={() => handleTenNhanVien(item.HoTenNhanVien)}>Xem chi tiết</button>
-                </div>
-
+                }
               </Col>
             ))}
           </Row>
