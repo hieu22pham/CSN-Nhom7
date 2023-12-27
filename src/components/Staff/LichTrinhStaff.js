@@ -7,6 +7,8 @@ import { deleteDocument } from '../Service/AddDocument';
 // import "./QuanLyLichTrinh.css"
 import { AuthContext } from '../Context/AuthProvider';
 import { useAuth } from '../Context/AuthProvider';
+import "./style.css"
+
 const { Option } = Select;
 
 function LichTrinhStaff() {
@@ -67,7 +69,9 @@ function LichTrinhStaff() {
                   <div className='lich__admin__item'>
                     <div className='lich__admin__name'>
                       <h3>{item.HoTenNhanVien}</h3>
-                      <h3>{item.NgayLamViec}</h3>
+                      <h3>Tên công việc: {item.tenCongViec}</h3>
+                      <h3>Ca làm việc: {item.caLamViec}</h3>
+                      <h3>Ngày làm việc: {item.NgayLamViec}</h3>
                     </div>
                   </div>
                 )}

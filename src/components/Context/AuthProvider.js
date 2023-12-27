@@ -19,7 +19,7 @@ export default function AuthProvider({ children }) {
   const [tenHienThi, setTenHienThi] = useState('');
   const [tenNhanVien, setTenNhanVien] = useState('');
   const [pathTenNhanVien, setPathTenNhanVien] = useState('');
-
+  const [pathTenNhanVien2, setPathTenNhanVien2] = useState('');
 
   React.useEffect(() => {
     const data = db.collection('LichKham');
@@ -74,7 +74,7 @@ export default function AuthProvider({ children }) {
     <AuthContext.Provider value={{
       user, setUser, lichKham, cate, setLichKham, product, setProduct
       , textProduct, setTextProduct, tenHienThi, setTenHienThi, tenNhanVien, setTenNhanVien
-      , pathTenNhanVien, setPathTenNhanVien
+      , pathTenNhanVien, setPathTenNhanVien, pathTenNhanVien2, setPathTenNhanVien2,
     }}>
       {isLoading ? <Spin style={{ position: 'fixed', inset: 0 }} /> : children}
     </AuthContext.Provider>

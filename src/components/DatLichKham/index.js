@@ -3,7 +3,7 @@ import { useAuth } from "../Context/AuthProvider";
 import dayjs from 'dayjs';
 import React from "react";
 import { AuthContext } from "../Context/AuthProvider";
-import { Input, Form } from "antd";
+import { Input, Form, Button } from "antd";
 import dayLocaleData from 'dayjs/plugin/localeData';
 import { DatePicker, Space, Alert, Select } from 'antd';
 import { useState, useEffect, useMemo } from "react";
@@ -263,7 +263,7 @@ export default function DatLichKham() {
           <Input className="inputWidth" placeholder='Nhập tình trạng bệnh' required />
         </Form.Item>
 
-        <button onClick={handleSubmit}>Gửi</button>
+        <Button type='primary' className="btnDatLich" onClick={handleSubmit}>Gửi</Button>
       </Form>
 
     </>

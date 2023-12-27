@@ -4,3 +4,180 @@
   margin-bottom: 20px;
   top: 20px;
 }
+
+.AllLichTrinh {
+  margin-left: 70px;
+  position: relative;
+}
+
+.danhSachLichHen__admin {
+  margin-left: -30px;
+}
+
+/* .lichTrinhCongViec__admin {
+  position: absolute;
+  right: 20px;
+} */
+
+.tittle {
+  margin-left: -35px;
+}
+
+.productsCate__admin {
+  position: absolute;
+  left: -30px;
+}
+
+.lich__admin__item-1 {
+  position: absolute;
+  width: 250px;
+  height: 250px;
+  border-radius: 15px;
+  margin-right: 100px;
+  margin-bottom: 25px;
+  box-shadow: 0 1px 2px 0 rgba(48, 50, 53, 0.1), 0 2px 6px 2px rgba(18, 20, 21, 0.2);
+}
+
+.lich__admin__item {
+  position: absolute;
+  width: 250px;
+  height: 250px;
+  margin-right: 100px;
+  border-radius: 15px;
+  margin-bottom: 25px;
+  box-shadow: 0 1px 2px 0 rgba(48, 50, 53, 0.1), 0 2px 6px 2px rgba(18, 20, 21, 0.2);
+}
+
+.lich__admin__name {
+  position: absolute;
+  left: 30px;
+  top: 30px;
+}
+
+.lich__admin__name1 {
+  position: absolute;
+  left: 13px;
+  top: 0px;
+}
+
+.lich__admin__item1 {
+  width: 250px;
+  height: 330px;
+  margin-right: 100px;
+  border-radius: 15px;
+  margin-bottom: 25px;
+  box-shadow: 0 1px 2px 0 rgba(48, 50, 53, 0.1), 0 2px 6px 2px rgba(18, 20, 21, 0.2);
+}
+
+.margin {
+  margin-bottom: 40px;
+}
+
+.btnAddProductCate {
+  margin-top: 60px;
+  margin-left: -35px;
+  border: 1px orangered solid;
+}
+
+.btnAddProductCate:hover {
+  background: orangered;
+  border: 1px black solid;
+}
+
+.btnAddProductCate:hover span {
+  color: #fff;
+}
+
+.btn_delete {
+  position: absolute;
+  top: 285px;
+  left: 160px;
+}
+
+.btn_delete:hover {
+  background-color: orangered;
+}
+
+.btn_delete1 {
+  position: absolute;
+  top: 60px;
+  left: 125px;
+}
+
+.btn_delete1:hover {
+  background-color: orangered;
+}
+
+.btn_phanCong {
+  position: absolute;
+  top: 285px;
+  left: 20px;
+}
+
+.btn_phanCong:hover {
+  background-color: orangered;
+}
+
+.btn_phanCong1 {
+  position: absolute;
+  top: 60px;
+  left: -35px;
+}
+
+.btn_phanCong1:hover {
+  background-color: orangered;
+}
+
+.btn_Sua {
+  position: absolute;
+  top: 285px;
+  left: 125px;
+}
+
+.btn_Sua:hover {
+  background-color: orangered;
+}
+
+.btn_Sua1 {
+  position: absolute;
+  top: 60px;
+  left: 70px;
+}
+
+.btn_Sua1:hover {
+  background-color: orangered;
+}
+
+button:hover {
+  background-color: orangered;
+}
+
+.btn_delete2 {
+  position: absolute;
+  top: 285px;
+  left: 155px;
+}
+
+.btn_Sua2 {
+  position: absolute;
+  top: 285px;
+  left: 55px;
+}
+
+.btn_PhanCong2 {
+  position: absolute;
+  top: 280px;
+  left: 55px;
+}
+
+.badge {
+  position: absolute;
+  top: 0;
+  /* left: 0; */
+  margin-left: auto;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  border-top-left-radius: 19px;
+  border-bottom-left-radius: 19px;
+}

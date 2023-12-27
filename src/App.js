@@ -16,9 +16,11 @@ import LichTrinhNhanVien from './components/Admin/LichTrinhNhanVien';
 import { AuthContext } from './components/Context/AuthProvider';
 import QuanLyNhanVien from './components/Admin/QuanLyNhanVien';
 import ThongTinNhanVien from './components/Admin/ThongTinNhanVien';
+import LichHenDaPhanCong from './components/Admin/LichHenDaPhanCong';
+import ChiTietLHDaPhanCong from './components/Admin/ChiTietLHDaPhanCong';
 
 function App() {
-  const { pathTenNhanVien } =
+  const { pathTenNhanVien, pathTenNhanVien2 } =
     React.useContext(AuthContext) || "";
 
   return (
@@ -34,10 +36,15 @@ function App() {
 
           <Route path="/admin" element={<Admin />} >
             <Route path="/admin/nhanvien" element={<QuanLyNhanVien />} />
-            <Route path="/admin/LichHen" element={<QuanLyLichHen />} />
+            <Route path="/admin/LichHen/ChuaPhanCong" element={<QuanLyLichHen />} />
+            <Route path="/admin/LichHen/DaPhanCong" element={<LichHenDaPhanCong />} />
+            <Route
+              path={`/admin/LichHen/DaPhanCong/:${pathTenNhanVien}`}
+              element={< ChiTietLHDaPhanCong />} />
+
             <Route path="/admin/LichTrinh" element={<QuanLyLichTrinh />} />
             <Route
-              path={`/admin/LichTrinh/:${pathTenNhanVien}`}
+              path={`/admin/LichTrinh/:${pathTenNhanVien2}`}
               element={< LichTrinhNhanVien />} />
 
             <Route

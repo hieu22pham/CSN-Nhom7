@@ -7,6 +7,8 @@ import { deleteDocument } from '../Service/AddDocument';
 import "./QuanLyLichTrinh.css"
 import { AuthContext } from '../Context/AuthProvider';
 import { useNavigate } from 'react-router-dom';
+import "./showNhanVienDetail.css"
+
 const { Option } = Select;
 
 function ThongTinNhanVien() {
@@ -209,7 +211,7 @@ function ThongTinNhanVien() {
                   visible={isModalOpen}
                   confirmLoading={loading}
                   footer={[
-                    <Button key="back" onClick={handleCancelDelete}>
+                    <Button type="primary" danger key="back" onClick={handleCancelDelete}>
                       Hủy
                     </Button>,
                     <Button key="submit" type="primary" loading={loading} onClick={handleOkDelete}>
@@ -217,18 +219,22 @@ function ThongTinNhanVien() {
                     </Button>,
                   ]}
                 ></Modal>
-                <div className='lich__admin__item'>
-                  <div className='lich__admin__name'>
-                    <h3>Họ tên: {item.HoTenNhanVien}</h3>
-                    <h3>Giới tính: {item.gioiTinh}</h3>
-                    <h3>Ngày sinh: {item.ngaySinh}</h3>
-                    <h3>Số điện thoại: {item.sdt}</h3>
-                    <h3>Email: {item.email}</h3>
-                    <h3>Địa chỉ: {item.diaChi}</h3>
-                    <h3>Vị trí làm việc: {item.viTriLamViec}</h3>
-                    <h3>Kinh nghiệm: {item.kinhNghiem}</h3>
-                    <h3>Hồ sơ thuế: {item.hoSoThue}</h3>
-                    <h3>Số bảo hiểm xã hội: {item.baoHiemXaHoi}</h3>
+                <div className='nhanVien__content'>
+                  <div className='nhanVien__content--image'>
+                    <img src={item.url} />
+                  </div>
+                  <div className='nhanVien__content--price'>
+                    <h2 className='nhanVien__content--priceTittle' >Thông tin nhân viên</h2>
+                    <h3>Họ tên: <span>{item.HoTenNhanVien}</span></h3>
+                    <h3>Giới tính:<span>{item.gioiTinh}</span> </h3>
+                    <h3>Ngày sinh: <span>{item.ngaySinh}</span></h3>
+                    <h3>Số điện thoại: <span>{item.sdt}</span></h3>
+                    <h3>Email: <span>{item.email}</span></h3>
+                    <h3>Địa chỉ: <span>{item.diaChi}</span></h3>
+                    <h3>Vị trí làm việc: <span>{item.viTriLamViec}</span></h3>
+                    <h3>Kinh nghiệm: <span>{item.kinhNghiem}</span></h3>
+                    <h3>Hồ sơ thuế: <span>{item.hoSoThue}</span></h3>
+                    <h3>Số bảo hiểm xã hội: <span>{item.baoHiemXaHoi}</span></h3>
                   </div>
                 </div>
 

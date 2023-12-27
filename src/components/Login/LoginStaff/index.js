@@ -152,7 +152,7 @@ function LoginStaff() {
                   offset: 7,
                 }}
               >
-                <Button className='button-login' type="primary" htmlType="submit">
+                <Button type='primary' className='button-login' htmlType="submit">
                   Đăng nhập
                 </Button>
               </Form.Item>

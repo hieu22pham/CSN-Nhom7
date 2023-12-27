@@ -1,5 +1,5 @@
 import React, { useEffect, useContext, useState, useMemo } from 'react';
-import { Button, Form, Modal, Table, Image, Space, Select, DatePicker } from 'antd';
+import { Button, Form, Modal, Input, Image, Space, Select, DatePicker } from 'antd';
 import { addDocument } from '../Service/AddDocument';
 import { db } from '../../firebase/config';
 import { Col, Row } from 'antd';
@@ -185,14 +185,37 @@ function QuanLyLichTrinh() {
 
               </Form.Item>
             </Space>
-
+            <Form.Item
+              label='Tên công việc'
+              name='tenCongViec'
+              rules={[
+                {
+                  required: true,
+                  message: 'Vui lòng nhập tên công việc!',
+                },
+              ]}
+            >
+              <Input className="inputWidth" placeholder='Tên công việc' required />
+            </Form.Item>
+            <Form.Item
+              label='Ca làm việc'
+              name='caLamViec'
+              rules={[
+                {
+                  required: true,
+                  message: 'Vui lòng nhập ca làm việc!',
+                },
+              ]}
+            >
+              <Input className="inputWidth" placeholder='Nhập ca làm việc' required />
+            </Form.Item>
             <Form.Item name="NgayLamViec" label="Ngày làm việc " {...config}>
               <DatePicker placeholder="Chọn ngày" />
             </Form.Item>
           </Form>
         </Modal >
         <h2 className='tittle'>Chọn nhân viên: </h2>
-        <div className='lichTrinhCongViec__admin'>
+        <div className='danhSachLichHen__admin'>
           <Row>
             {DanhSachNhanVien.map((item) => (
               <Col key={item.id} span="8">
@@ -203,7 +226,7 @@ function QuanLyLichTrinh() {
                   visible={isModalOpen}
                   confirmLoading={loading}
                   footer={[
-                    <Button key="back" onClick={handleCancelDelete}>
+                    <Button type="primary" key="back" onClick={handleCancelDelete}>
                       Hủy
                     </Button>,
                     <Button key="submit" type="primary" loading={loading} onClick={handleOkDelete}>
@@ -212,13 +235,18 @@ function QuanLyLichTrinh() {
                   ]}
                 ></Modal>
                 {item.HoTenNhanVien &&
-                  <div className='lich__admin__item'>
-                    <div className='lich__admin__name'>
-                      <h3>{item.HoTenNhanVien}</h3>
-                      {/* <h3>{item.NgayLamViec}</h3> */}
+                  <div className='border'>
+                    <div className='nhanVien__admin'>
+                      {
+                        item.HoTenNhanVien && (
+                          <div>
+                            <h3>{item.HoTenNhanVien}</h3>
+                            <Button onClick={() => handleTenNhanVien(item.HoTenNhanVien)}>Xem chi tiết</Button>
+                            {/* <button className='btn_delete' onClick={() => handleDeleteDoc(item)}>Xóa</button>  */}
+                          </div>
+                        )
+                      }
                     </div>
-                    {/* <button className='btn_delete' onClick={() => handleDeleteDoc(item)}>Xóa</button> */}
-                    <button className='btn_delete' onClick={() => handleTenNhanVien(item.HoTenNhanVien)}>Xem chi tiết</button>
                   </div>
                 }
               </Col>

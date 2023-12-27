@@ -1,5 +1,5 @@
 import React, { useEffect, useContext, useState, useMemo } from 'react';
-import { Button, Form, Modal, Input, Image, Space, Select, DatePicker } from 'antd';
+import { Button, Form, Modal, Input, Badge, Space, Select, DatePicker } from 'antd';
 import { addDocument } from '../Service/AddDocument';
 import { db } from '../../firebase/config';
 import { Col, Row } from 'antd';
@@ -9,15 +9,25 @@ import { AuthContext } from '../Context/AuthProvider';
 import { useNavigate } from 'react-router-dom';
 const { Option } = Select;
 
-function LichTrinhNhanVien() {
+const options = [];
+
+for (let i = 8; i <= 17; i++) {
+  if (i !== 12) {
+    options.push({
+      value: i + " giờ",
+      label: i + " giờ",
+    });
+  }
+}
+
+
+function ChiTietLHDaPhanCong() {
+  const [danhSachNhanViens, setDanhSachNhanViens] = useState([]);
+  const [dateData, setDateData] = useState([]);
   const navigate = useNavigate([])
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [loading, setLoading] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState([]);
-
-  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
-  const [selectedProductForEdit, setSelectedProductForEdit] = useState({});
-  const [formSua] = Form.useForm();
 
   const [lichTrinhCongViec, setLichTrinhCongViec] = useState([]);
   const [DanhSachNhanVien, setDanhSachNhanVien] = useState([]);
@@ -27,8 +37,12 @@ function LichTrinhNhanVien() {
   const { tenNhanVien, setTenNhanVien } =
     React.useContext(AuthContext);
 
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const [selectedProductForEdit, setSelectedProductForEdit] = useState({});
+  const [formSua] = Form.useForm();
+
   const fetchLichTrinhCongViec = () => {
-    const data = db.collection("LichTrinhCongViec");
+    const data = db.collection("LichHenDaPhanCong");
     data
       .get()
       .then((querySnapshot) => {
@@ -38,8 +52,6 @@ function LichTrinhNhanVien() {
         productsData.forEach((item) => {
           if (item.HoTenNhanVien === `${tenNhanVien}`) {
             a.push(item);
-          } else {
-            console.log(item.HoTenNhanVien === `${tenNhanVien}`);
           }
         });
 
@@ -112,7 +124,7 @@ function LichTrinhNhanVien() {
     setLoading(true);
     const batch = db.batch();
 
-    deleteDocument("LichTrinhCongViec", selectedProduct.createdAt);
+    deleteDocument("LichHenDaPhanCong", selectedProduct.createdAt);
 
     setLoading(false);
     setIsModalOpen(false);
@@ -150,9 +162,16 @@ function LichTrinhNhanVien() {
     ],
   };
 
+  // sửa
   const handleEditDoc = (item) => {
     setIsEditModalOpen(true);
     setSelectedProductForEdit(item);
+    formSua.validateFields()
+      .then((values) => {
+        const updatedProductData = {
+          ...values,
+        };
+      })
   };
 
   const handleOkEdit = () => {
@@ -163,7 +182,7 @@ function LichTrinhNhanVien() {
           ...values,
         };
 
-        const existingProductRef = db.collection("LichTrinhCongViec").where('createdAt', '==', selectedProductForEdit.createdAt).limit(1);
+        const existingProductRef = db.collection("LichHenDaPhanCong").where('createdAt', '==', selectedProductForEdit.createdAt).limit(1);
 
         existingProductRef.get()
           .then((querySnapshot) => {
@@ -177,7 +196,7 @@ function LichTrinhNhanVien() {
                   .then(() => {
                     console.log("Document successfully updated!");
                     memoizedFetchLichTrinhCongViec();
-                    formSua.setFieldsValue(updatedProductData);
+                    form.setFieldsValue(updatedProductData);
                     setIsEditModalOpen(false);
                   })
                   .catch((error) => {
@@ -198,6 +217,15 @@ function LichTrinhNhanVien() {
 
   const handleCancelEdit = () => {
     setIsEditModalOpen(false);
+  };
+
+  const onChange = (date, dateString) => {
+    const moment = require('moment');
+    const formattedNgayDenKham = date ? moment(date).format('DD-MM-YYYY') : null;
+    const uniqueNhanVienNames = Array.from(new Set(danhSachNhanViens
+      .filter(item => item.NgayLamViec === formattedNgayDenKham)
+      .map(item => item.HoTenNhanVien)));
+    setDateData(uniqueNhanVienNames);
   };
 
   return (
@@ -249,7 +277,91 @@ function LichTrinhNhanVien() {
             </Form.Item>
           </Form>
         </Modal >
-        <h2 className='tittle'>Danh sách lịch trình: </h2>
+        <Modal
+          title='Sửa thông tin lịch hẹn'
+          visible={isEditModalOpen}
+          onOk={handleOkEdit}
+          onCancel={handleCancelEdit}
+        >
+          <Form form={formSua} layout='vertical' initialValues={selectedProductForEdit}>
+            <Form.Item label='Họ tên' name='HoTen'
+              rules={[
+                {
+                  required: true,
+                  message: 'Vui lòng nhập họ tên!',
+                },
+              ]}
+            >
+              <Input className="inputWidth" placeholder='Nhập họ tên' required />
+            </Form.Item>
+            <Form.Item label='Giới tính' name='GioiTinh'
+              rules={[
+                {
+                  required: true,
+                  message: 'Vui lòng nhập giới tính!',
+                },
+              ]}
+            >
+              <Input className="inputWidth" placeholder='Nhập giới tính' required />
+            </Form.Item>
+            <Form.Item label='Ngày sinh' name='NgaySinh'
+              rules={[
+                {
+                  required: true,
+                  message: 'Vui lòng nhập ngày sinh!',
+                },
+              ]}
+            >
+              <Input className="inputWidth" placeholder='Nhập ngày sinh' required />
+            </Form.Item>
+            <Form.Item label='E-mail' name='Email'
+              rules={[
+                {
+                  required: true,
+                  message: 'Vui lòng nhập Email!',
+                },
+              ]}
+            >
+              <Input className="inputWidth" placeholder='Nhập Email' />
+            </Form.Item>
+            <Form.Item label='Số điện thoại' name='SoDienThoai'
+              rules={[
+                {
+                  required: true,
+                  message: 'Vui lòng nhập số điện thoại!',
+                },
+              ]}
+            >
+              <Input className="inputWidth" placeholder='Nhập số điện thoại' required />
+            </Form.Item>
+            <Form.Item label='Thời gian khám' name='ThoiGianKham'
+              rules={[
+                {
+                  required: true,
+                  message: 'Vui lòng thời gian khám!',
+                },
+              ]}
+            >
+              <Input className="inputWidth" placeholder='Nhập thời gian khám' required />
+            </Form.Item>
+
+            <Form.Item name="NgayDenKham" label="Ngày đến khám">
+              <Input className="inputWidth" placeholder='Nhập ngày đến khám' required />
+            </Form.Item>
+            <Form.Item label='Mô tả tình trạng bệnh:' name='TinhTrangBenh'
+              rules={[
+                {
+                  required: true,
+                  message: 'Vui lòng nhập tình trạng bệnh!',
+                },
+              ]}
+            >
+              <Input className="inputWidth" placeholder='Nhập tình trạng bệnh' required />
+            </Form.Item>
+          </Form>
+        </Modal>
+        <h2 className='tittle'>Thông tin lịch hẹn: </h2>
+        <h3>Tên nhân viên: {tenNhanVien}</h3>
         <div className='lichTrinhCongViec__admin'>
           <Row>
             {lichTrinhCongViec.map((item) => (
@@ -269,61 +381,34 @@ function LichTrinhNhanVien() {
                     </Button>,
                   ]}
                 ></Modal>
-                <Modal
-                  title='Sửa thông tin hàng'
-                  visible={isEditModalOpen}
-                  onOk={handleOkEdit}
-                  onCancel={handleCancelEdit}
-                >
-                  <Form form={formSua} layout='vertical' initialValues={selectedProductForEdit}>
-                    <Form.Item
-                      label='Tên công việc'
-                      name='tenCongViec'
-                      rules={[
-                        {
-                          required: true,
-                          message: 'Vui lòng nhập tên công việc!',
-                        },
-                      ]}
+                <div className='margin'>
+                  <div className='lich__admin__item1'>
+                    <Badge.Ribbon className='badge'
+                      text={`${item.trangThaiCuocHen}`}
+                      color="red"
                     >
-                      <Input className="inputWidth" placeholder='Tên công việc' required />
-                    </Form.Item>
-                    <Form.Item
-                      label='Ca làm việc'
-                      name='caLamViec'
-                      rules={[
-                        {
-                          required: true,
-                          message: 'Vui lòng nhập ca làm việc!',
-                        },
-                      ]}
-                    >
-                      <Input className="inputWidth" placeholder='Nhập ca làm việc' required />
-                    </Form.Item>
-                    <Form.Item name="NgayLamViec" label="Ngày làm việc " >
-                      <Input className="inputWidth" placeholder='Nhập ngày làm việc' required />
-
-                    </Form.Item>
-                  </Form>
-                </Modal>
-                <div className='lich__admin__item'>
-                  <div className='lich__admin__name'>
-                    <h3>{item.HoTenNhanVien}</h3>
-                    <h3>Tên công việc: {item.tenCongViec}</h3>
-                    <h3>Ca làm việc: {item.caLamViec}</h3>
-                    <h3>Ngày làm việc: {item.NgayLamViec}</h3>
+                      <div className='lich__admin__name1'>
+                        <h3>Họ tên: {item.HoTen}</h3>
+                        <h3>Giới tính: {item.GioiTinh}</h3>
+                        <h3>Ngày sinh: {item.NgaySinh}</h3>
+                        <h3>Ngày sinh: {item.SoDienThoai}</h3>
+                        <h3>Thời gian khám: {item.ThoiGianKham}</h3>
+                        <h3>Ngày đến khám: {item.NgayDenKham}</h3>
+                        <h3>Tình trạng bệnh: {item.TinhTrangBenh}</h3>
+                      </div>
+                      <Button className='btn_Sua2' onClick={() => handleEditDoc(item)}>Sửa</Button>
+                      <Button type="primary" danger className='btn_delete2' onClick={() => handleDeleteDoc(item)}>Xóa</Button>
+                    </Badge.Ribbon>
                   </div>
-                  <Button className='btn_Sua3' onClick={() => handleEditDoc(item)}>Sửa</Button>
-                  <Button type="primary" danger className='btn_delete3' onClick={() => handleDeleteDoc(item)}>Xóa</Button>
                 </div>
 
               </Col>
             ))}
           </Row>
         </div>
-      </div>
+      </div >
     </>
   )
 }
 
-export default LichTrinhNhanVien;
+export default ChiTietLHDaPhanCong;

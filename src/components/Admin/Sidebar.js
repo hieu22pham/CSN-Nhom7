@@ -39,9 +39,21 @@ export default function SidebarAdmin() {
       key: "/admin/LichTrinh",
     },
     {
-      label: <Link to="/admin/LichHen">Danh sách lịch hẹn</Link>,
+      label: "Lịch hẹn",
       icon: <InsertRowBelowOutlined />,
       key: "/admin/LichHen",
+      children: [
+        {
+          label: <Link to="/admin/LichHen/ChuaPhanCong">Chưa phân công</Link>,
+          icon: <InsertRowBelowOutlined />,
+          key: "/admin/LichHen",
+        }, {
+          label: <Link to="/admin/LichHen/DaPhanCong">Đã phân công</Link>,
+          icon: <InsertRowBelowOutlined />,
+          key: "/admin/LichHen",
+        }
+
+      ]
     }, {
       label: <Link to="/admin/LichTrinh">Lịch trình công việc</Link>,
       icon: <InsertRowAboveOutlined />,

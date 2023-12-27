@@ -13,3 +13,13 @@
 .inputWidth {
   width: 600px;
 }
+
+.btnDatLich {
+  margin-top: 10px;
+  margin-left: 100px;
+  width: 100px;
+}
+
+.btnDatLich:hover {
+  background-color: orangered !important;
+}
